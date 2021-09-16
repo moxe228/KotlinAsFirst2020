@@ -106,7 +106,7 @@ fun whichRookThreatens(
     ((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2)) -> 1
     ((kingX == rookX2 || kingY == rookY2) && (kingX != rookX1 && kingY != rookY1)) -> 2
     ((kingX == rookX2 || kingY == rookY2) && (kingX == rookX1 || kingY == rookY1)) -> 3
-    //((kingX == rookX1) && (kingY == rookY2)) || ((kingY == rookY1) && (kingX == rookX2)) || ((kingX == rookX1) && (kingY == rookY1)) || ((kingX == rookX2) && (kingY == rookY2)) -> 3
+    //((kingX == rookX1) && (kingY == rookY2)) || ((kingY == rookY1) && (kingX == rookX2)) || ((kingX == rookX1) && (kingY == rookY1)) || ((kingX == rookX2) && (kingY == rookY2)) -> 3 (Useless)
     else -> 0
 }
 
