@@ -89,6 +89,7 @@ fun timeForHalfWay(
     t3: Double, v3: Double
 ): Double = TODO()
 
+
 /**
  * Простая (2 балла)
  *
@@ -106,7 +107,7 @@ fun whichRookThreatens(
     ((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2)) -> 1
     ((kingX == rookX2 || kingY == rookY2) && (kingX != rookX1 && kingY != rookY1)) -> 2
     ((kingX == rookX2 || kingY == rookY2) && (kingX == rookX1 || kingY == rookY1)) -> 3
-    //((kingX == rookX1) && (kingY == rookY2)) || ((kingY == rookY1) && (kingX == rookX2)) || ((kingX == rookX1) && (kingY == rookY1)) || ((kingX == rookX2) && (kingY == rookY2)) -> 3 (Useless)
+    //((kingX == rookX1) && (kingY == rookY2)) || ((kingY == rookY1) && (kingX == rookX2)) || ((kingX == rookX1) && (kingY == rookY1)) || ((kingX == rookX2) && (kingY == rookY2)) -> 3
     else -> 0
 }
 
@@ -144,4 +145,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    (a in c..d && b in c..d) -> b - a
+    (c in a..b && d in a..b) -> d - c
+    (a in c..d && b !in c..d) -> d - a
+    (b in c..d && a !in c..d) -> b - c
+    else -> -1
+}
+
+
