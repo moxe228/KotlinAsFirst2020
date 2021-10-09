@@ -190,7 +190,18 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var numberOne = n
+    var numberTwo = 0
+    var temporary = 0
+    while (numberOne > 0) {
+        temporary = numberOne % 10
+        numberOne /= 10
+        numberTwo = numberTwo * 10
+        numberTwo = numberTwo + temporary
+    }
+    return numberTwo
+}
 
 /**
  * Средняя (3 балла)
@@ -256,12 +267,19 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var fibNum = 0
     var digitNum = 0
     var tempFirst = 0
     for (i in 1..n) {
-        fibNum = fib(i)
-        if ((fibNum / 10) > 0) {
+        var fibNum = fib(i)
+        tempFirst = fibNum
+        if (digitNumber(fibNum) == 1) {
+            digitNum++
+            if (digitNum >= n) {
+                fibNum = tempFirst
+                break
+            }
+        }
+        if (digitNumber(fibNum) == 2) {
             tempFirst = fibNum / 10
             digitNum++
             if (digitNum >= n) {
@@ -274,32 +292,27 @@ fun fibSequenceDigit(n: Int): Int {
                 fibNum = tempFirst
                 break
             }
-        } else digitNum++
-        if (digitNum >= n) break
-        var tempSecond = 0
-        if (fibNum > 10) {
-            for (i in 10.pow(digitNumber(tempSecond) - 1) downTo 1) {
-                tempSecond = fibNum / i
-                digitNum++
-                if (digitNum >= n) {
-                    fibNum = tempSecond
-                    break
-                }
-                tempSecond = fibNum % i
-                digitNum++
-                if (digitNum >= n) {
-                    fibNum = tempSecond
-                    break
-                }
-                while ((tempSecond > 0) && (digitNum < n)) {
-                    tempSecond % i
+        }
+        if (digitNumber(fibNum) >= 3) {
+            for (i in 10.pow(digitNumber(tempFirst) - 1) downTo 1 step 10.pow(1)) {
+                while (digitNumber(fibNum) > 1) {
+                    tempFirst = (fibNum / i) % i
                     digitNum++
-                    fibNum = tempSecond
+                    if (digitNum >= n) {
+                        fibNum = tempFirst
+                        break
+                    }
+                    fibNum = fibNum % i
+                    digitNum++
+                    if (digitNum >= n) {
+                        fibNum = tempFirst
+                        break
+                    }
                 }
             }
         }
     }
-    return fibNum
+    return tempFirst
 }
 private fun Int.pow(n: Int): Int {
     var z = n
