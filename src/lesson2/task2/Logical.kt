@@ -18,7 +18,11 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    var firstHalf = number / 100
+    var secondHalf = number % 100
+    return ((firstHalf % 10) + (firstHalf / 10) == (secondHalf % 10) + (secondHalf / 10))
+}
 
 /**
  * Простая (2 балла)
