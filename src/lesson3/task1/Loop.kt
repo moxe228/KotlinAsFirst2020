@@ -267,58 +267,27 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int { // Пример для исключения, при n = 28 : 610 <- (доработать)
-    var temporaryNum = 0
-    var numberFib = 0
-    var sequenceNum = 0
-    while (sequenceNum < n) {
-        numberFib++
-        var revertedFib = revert(fib(numberFib))
-        while (revertedFib > 0) {
-            if(((fib(numberFib) % 10) == 0) && (digitNumber(fib(numberFib)) >= 3)) {
-                sequenceNum++
-                if (sequenceNum >= n) {
-                    temporaryNum = revertedFib % 10
-                    break
-                }
-            } else {
-                temporaryNum = revertedFib % 10
-                sequenceNum++
-                if (sequenceNum >= n) break
-            }
-            revertedFib /= 10
-        }
-    }
-    return temporaryNum
-}
-
-/**
- * Недоработанное решение, под реализацию идеи не реверсивного способа (доделать)
 fun fibSequenceDigit(n: Int): Int {
-    var sequenceNumber = 0
-    var temp = 0
-    for (i in 1..n) { // С 1 числа фиб до №
-        var fibNumber = fib(i)
-        temp = 0
-        if (digitNumber(fibNumber) >= 2) { // Если кол-во символов в числе фиб 2 или больше
-            for (z in 1..digitNumber(fibNumber)) { // Кол-во символов в числе фиб
-                temp = (fibNumber / 10.0.pow(z)).toInt() // Заносим первую цифру числа фиб в темп, (например фиб = 13, темп = 1) 10 в степени 1 = 10 и тд
-                sequenceNumber++ // Добавляем счетчик
-                if (sequenceNumber >= n) { // Если счет равен нужному №, брейк
-                    break
-                }
-                temp = (fibNumber % 10.0.pow(z)).toInt() // Заносим промежуточную цифру в темп (например фиб = 13, темп = 3) 13 % 10 в степени 1  = 3 и тд
-                sequenceNumber++ // Добавляем счетчик
-                if (sequenceNumber >= n) {
-                    break
-                } else fibNumber = temp // Если счета не достаточно, продолжаем выполнять for
-            }
-        } else {
-            temp = fibNumber
-            sequenceNumber++
-            if (sequenceNumber >= n) break
+    var countDigits = 0
+    var temporaryNum = 0
+    var result = 0
+    for (i in 1..n) {
+        countDigits += digitNumber(fib(i))
+        if (countDigits >= n) {
+            temporaryNum = fib(i)
+            break
         }
     }
-    return temp
+    if (countDigits > n) {
+        countDigits -= digitNumber(temporaryNum)
+    }
+    while (countDigits != n) {
+        result = temporaryNum / 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
+        countDigits++
+        temporaryNum %= 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
+    }
+    if (temporaryNum == n) {
+        result = temporaryNum
+    }
+    return result
 }
-*/
