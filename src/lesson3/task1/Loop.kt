@@ -281,10 +281,11 @@ fun fibSequenceDigit(n: Int): Int {
     if (countDigits > n) {
         countDigits -= digitNumber(temporaryNum)
     }
-    while (countDigits != n) {
+    while (countDigits <= n) {
         result = temporaryNum / 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
-        countDigits++
         temporaryNum %= 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
+        countDigits++
+        if (countDigits >= n) break
     }
     if (temporaryNum == n) {
         result = temporaryNum
