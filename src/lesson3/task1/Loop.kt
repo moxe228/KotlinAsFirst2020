@@ -2,8 +2,8 @@
 
 package lesson3.task1
 
-import kotlin.math.sqrt
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -77,8 +77,8 @@ fun digitNumber(n: Int): Int {
     var number = n
     var count = 0
     if (n == 0) count++ else {
-        while (number != 0) {
-            count ++
+        while ((number > 0) || (number < 0)) {
+            count++
             number /= 10
         }
     }
@@ -158,7 +158,7 @@ fun collatzSteps(x: Int): Int {
     var number = x
     while (number > 1) {
         if (number % 2 == 0) {
-            number = number / 2
+            number /= 2
         } else {
             number = 3 * number + 1
         }
@@ -198,8 +198,8 @@ fun revert(n: Int): Int {
     while (numberOne > 0) {
         temporary = numberOne % 10
         numberOne /= 10
-        numberTwo = numberTwo * 10
-        numberTwo = numberTwo + temporary
+        numberTwo *= 10
+        numberTwo += temporary
     }
     return numberTwo
 }
@@ -268,6 +268,7 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
+
     var countDigits = 0
     var temporaryNum = 0
     var result = 0
@@ -281,8 +282,14 @@ fun fibSequenceDigit(n: Int): Int {
     countDigits -= digitNumber(temporaryNum)
     while (countDigits <= n) {
         result = temporaryNum / 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
+        val tempFirst = digitNumber(temporaryNum)
         temporaryNum %= 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
         countDigits++
+        if (countDigits >= n) break
+        if (digitNumber(temporaryNum) != tempFirst - 1) {
+            result = 0
+            countDigits += 1
+        }
         if (countDigits >= n) break
     }
     if (temporaryNum == n) {

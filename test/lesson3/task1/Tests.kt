@@ -84,6 +84,10 @@ class Tests {
         assertEquals(102334155, fib(40))
         assertEquals(1134903170, fib(45))
         assertEquals(1836311903, fib(46))
+        assertEquals(2971215073, fib(47))
+        assertEquals(4807526976, fib(48))
+        assertEquals(12586269025, fib(50))
+        assertEquals(225851433717, fib(56))
         // Just to calculate it
         fib(50)
     }
@@ -232,7 +236,17 @@ class Tests {
         assertEquals(1, fibSequenceDigit(2))
         assertEquals(3, fibSequenceDigit(4))
         assertEquals(2, fibSequenceDigit(9))
+        assertEquals(5, fibSequenceDigit(13))
         assertEquals(5, fibSequenceDigit(14))
+        assertEquals(8, fibSequenceDigit(15))
+        assertEquals(9, fibSequenceDigit(16))
         assertEquals(2, fibSequenceDigit(20))
+        assertEquals(1, fibSequenceDigit(27))
+        assertEquals(0, fibSequenceDigit(28))
+        assertEquals(9, fibSequenceDigit(29))
+        assertEquals(8, fibSequenceDigit(30))
+        assertEquals(7, fibSequenceDigit(31))
+        assertEquals(9, fibSequenceDigit(232))
+        assertEquals(3, fibSequenceDigit(234))
     }
 }
