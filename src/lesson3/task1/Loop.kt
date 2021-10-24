@@ -268,7 +268,6 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-
     var countDigits = 0
     var temporaryNum = 0
     var result = 0
