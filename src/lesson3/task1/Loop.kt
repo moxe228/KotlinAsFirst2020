@@ -256,7 +256,36 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var countDigits = 0
+    var temporaryNum = 0
+    var result = 0
+    for (i in 1..n) {
+        countDigits += digitNumber(sqr(i))
+        if (countDigits >= n) {
+            temporaryNum = sqr(i)
+            break
+        }
+    }
+    countDigits -= digitNumber(temporaryNum)
+    while (countDigits <= n) {
+        result = temporaryNum / 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
+        val tempFirst = digitNumber(temporaryNum)
+        temporaryNum %= 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
+        countDigits++
+        if (countDigits >= n) break
+        if (digitNumber(temporaryNum) != tempFirst - 1) {
+            result = 0
+            countDigits += 1
+        }
+        if (countDigits >= n) break
+    }
+    if (temporaryNum == n) {
+        result = temporaryNum
+    }
+    return result
+}
+private fun sqr(x: Int) = x * x
 
 /**
  * Сложная (5 баллов)
