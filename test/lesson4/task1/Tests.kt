@@ -201,6 +201,7 @@ class Tests {
         assertEquals("2ec", convertToString(1000, 19))
         assertEquals("z", convertToString(35, 36))
         assertEquals("a02220281", convertToString(Int.MAX_VALUE, 11))
+        assertEquals("0", convertToString(0, 2))
     }
 
     @Test
@@ -231,6 +232,7 @@ class Tests {
         assertEquals("MCMLXXVIII", roman(1978))
         assertEquals("DCXCIV", roman(694))
         assertEquals("XLIX", roman(49))
+        assertEquals("MMMCDXLVI", roman(3446))
     }
 
     @Test

@@ -269,26 +269,30 @@ fun convertToString(n: Int, base: Int): String {
         'y',
         'z'
     )
-    if (number > base) {
-        while (number >= base) {
-            if ((number % base) > 9) {
-                result += arrOne[(number % base) % 10]
-            } else {
+    if (n > 0) {
+        if (number > base) {
+            while (number >= base) {
+                if ((number % base) > 9) {
+                    result += arrOne[(number % base) % 10]
+                } else {
+                    result += (number % base).toString()
+                }
+                number /= base
+            }
+        }
+        if ((n >= 10) && (base > n)) {
+            result += arrOne[base - 11]
+        } else {
+            if ((base > 10) && (number == (base - 1))) {
+                result += arrOne[base - 11]
+                number /= base
+            }
+            if (number > 0) {
                 result += (number % base).toString()
             }
-            number /= base
         }
-    }
-    if ((n >= 10) && (base > n)) {
-        result += arrOne[base - 11]
     } else {
-        if ((base > 10) && (number == (base - 1))) {
-            result += arrOne[base - 11]
-            number /= base
-        }
-        if (number > 0) {
-            result += (number % base).toString()
-        }
+        result += '0'
     }
 return result.reversed()
 
@@ -341,6 +345,10 @@ fun roman(n: Int): String {
         while (number >= 500) {
             result += 'D'
             number -= 500
+        }
+        while (number >= 400) {
+            result += "CD"
+            number -= 400
         }
         while (number >= 100) {
             result += 'C'
