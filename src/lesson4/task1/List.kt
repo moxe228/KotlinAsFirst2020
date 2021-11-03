@@ -360,7 +360,7 @@ fun russian(n: Int): String {
         result += numbersByHundreds[(number / 100000) - 1]
         number %= 100000
         if (digitNumber(number) == 5) {
-            hundredsThousandsEnding = true
+            hundredsThousandsEnding = false
             result += " "
             if (((number / 1000) == 10) || ((number / 1000) > 19)) {
                 result += numbersByTens[(number / 10000) - 1]
@@ -372,7 +372,7 @@ fun russian(n: Int): String {
             }
         }
         if (digitNumber(number) == 4) {
-            hundredsThousandsEnding = true
+            hundredsThousandsEnding = false
             result += " "
             if ((number / 1000) !in 1..2) {
                 result += numbersToNine[number / 1000]
