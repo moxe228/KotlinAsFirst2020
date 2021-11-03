@@ -259,7 +259,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
 fun squareSequenceDigit(n: Int): Int {
     var countDigits = 0
     var temporaryNum = 0
-    var result = 0
+    var result: Int
     for (i in 1..n) {
         countDigits += digitNumber(sqr(i))
         if (countDigits >= n) {
@@ -267,19 +267,9 @@ fun squareSequenceDigit(n: Int): Int {
             break
         }
     }
-    countDigits -= digitNumber(temporaryNum)
-    while (countDigits <= n) {
-        result = temporaryNum / 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
-        val tempFirst = digitNumber(temporaryNum)
-        temporaryNum %= 10.0.pow(digitNumber(temporaryNum) - 1).toInt()
-        countDigits++
-        if (countDigits >= n) break
-        if (digitNumber(temporaryNum) != tempFirst - 1) {
-            result = 0
-            countDigits += 1
-            if (countDigits >= n) break
-        }
-        if (countDigits >= n) break
+    result = (temporaryNum / 10.0.pow(countDigits - n).toInt()) % 10
+    if (temporaryNum == n) {
+        result = temporaryNum
     }
     return result
 }
