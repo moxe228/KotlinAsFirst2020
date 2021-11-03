@@ -269,6 +269,7 @@ fun convertToString(n: Int, base: Int): String {
         'y',
         'z'
     )
+    println("Number -> $n")
     if (n > 0) {
         if (number > base) {
             while (number >= base) {
@@ -276,26 +277,38 @@ fun convertToString(n: Int, base: Int): String {
                     result += arrOne[(number % base) % 10]
                 } else {
                     result += (number % base).toString()
+                    println("Cycle 2 -> $number ")
                 }
                 number /= base
             }
         }
         if ((n >= 10) && (base > n)) {
             result += arrOne[base - 11]
+            println("Cycle 3 -> $number ")
         } else {
             if ((base > 10) && (number == (base - 1))) {
                 result += arrOne[base - 11]
                 number /= base
+                println("Cycle 4 -> $number ")
             }
             if (number > 0) {
-                result += (number % base).toString()
+                if ((base > 10) && (number == (base - 1))) {
+                    println("Before Cycle 5 Number -> $number ")
+                    println("Before Cycle 6 Result -> $result ")
+                    result += arrOne[base - 11]
+                    number /= base
+                    println("Cycle 5 -> $number ")
+                }
+                if (number > 0) {
+                    result += (number % base).toString()
+                    println("Cycle 6 -> $number ")
+                }
             }
         }
     } else {
         result += '0'
     }
-return result.reversed()
-
+    return result.reversed()
 }
 
 /**
@@ -384,4 +397,350 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var result = ""
+    var number = n
+    val numbersToNine = arrayListOf(
+        "ноль",
+        "один",
+        "два",
+        "три",
+        "четыре",
+        "пять",
+        "шесть",
+        "семь",
+        "восемь",
+        "девять",
+    )
+    val numbersWithEnding = arrayListOf(
+        "одна",
+        "две"
+    )
+    val numbersToNineteen = arrayListOf(
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семьнадцать",
+        "восемьнадцать",
+        "девятнадцать"
+    )
+    val numbersByTens = arrayListOf(
+        "десять",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    val numbersByHundreds = arrayListOf(
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    val numberByThousands = arrayListOf(
+        "тысяч",
+        "тысяча",
+        "тысячи"
+    )
+    var hundredsThousandsEnding = true
+    if (number > 0) {
+        println("SUPER NUMBER : $n")
+        if (digitNumber(number) == 6) { // разбор 6 значных чисел
+            result += numbersByHundreds[(number / 100000) - 1] // первое число
+            number %= 100000
+            if (digitNumber(number) == 5) {
+                hundredsThousandsEnding = true
+                result += " "
+                if (((number / 1000) == 10) || ((number / 1000) > 19)) { // второе число десятки
+                    println("number tens : $number")
+                    result += numbersByTens[(number / 10000) - 1]
+                    number %= 10000
+                    println("number after tens : $number")
+                }
+                if (((number / 1000) < 20) && ((number / 1000) > 10)) { // второе число если 10-19
+                    println("number 10-19 : $number")
+                    result += numbersToNineteen[((number / 1000) % 10) - 1]
+                    number %= 1000
+                    println("number after 10-19 : $number")
+                }
+            }
+            if (digitNumber(number) == 4) { // третье число +
+                hundredsThousandsEnding = true
+                println("number == 4 : $number")
+                result += " "
+                if ((number / 1000) !in 1..2) { // несклоняемые числа
+                    result += numbersToNine[number / 1000]
+                }
+                if ((number / 1000) in 1..2) { // склоняемые числа
+                    result += numbersWithEnding[(number / 1000) - 1]
+                }
+                number %= 1000
+                println("number after == 4 : $number")
+            }
+            if (hundredsThousandsEnding) {
+                result += " "
+                result += numberByThousands[0]
+            } else {
+                if (('ь' == result[result.lastIndex]) ||
+                    ('о' == result[result.lastIndex]) ||
+                    ('т' == result[result.lastIndex])
+                ) { // проверка последнего символа для склонения тысяч
+                    result += " "
+                    result += numberByThousands[0]
+                } else {
+                    if ('а' == result[result.lastIndex]) {
+                        result += " "
+                        result += numberByThousands[1]
+                    } else {
+                        if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                            result += " "
+                            result += numberByThousands[2]
+                        }
+                    }
+                }
+            }
+            if (digitNumber(number) == 3) {
+                println("number == 3 : $number")
+                result += " "
+                result += numbersByHundreds[(number / 100) - 1] // первое число
+                number %= 100
+                println("number after == 3 : $number")
+            }
+            if (digitNumber(number) == 2) {
+                if ((number == 10) || (number > 19)) { // второе число десятки
+                    println("number by tens == 2 : $number")
+                    result += " "
+                    result += numbersByTens[(number / 10) - 1]
+                    number %= 10
+                    println("number after by tens == 2 : $number")
+                }
+                if ((number < 20) && (number > 10)) { // второе число 10-19
+                    println("number 10-19 == 2: $number")
+                    result += " "
+                    result += numbersToNineteen[(number % 10) - 1]
+                    number = 0
+                    println("number after 10-19 == 2 : $number")
+                }
+            }
+            if ((digitNumber(number) == 1) && (number != 0)) {
+                println("number == 1 : $number")
+                result += " "
+                result += numbersToNine[number] // третье число +
+            }
+            number = 0
+        }
+
+        if (digitNumber(number) == 5) { // разбор 5 значных чисел
+            if (((number / 1000) == 10) || ((number / 1000) > 19)) { // первые два десятки
+                println("first numbers tens : $number")
+                result += numbersByTens[((number / 1000) / 10) - 1]
+                number %= 10000
+                println("first number after tens : $number")
+            }
+            if (((number / 1000) > 10) && ((number / 1000) < 20)) { // первые два 10-19
+                println("first number 10-19 : $number")
+                result += numbersToNineteen[(number % 10) - 1]
+                number %= 1000
+            }
+            if (digitNumber(number) == 4) { // третье число +
+                println("number == 4 : $number")
+                result += " "
+                if ((number / 1000) !in 1..2) { // несклоняемые числа
+                    result += numbersToNine[number / 1000]
+                }
+                if ((number / 1000) in 1..2) { // склоняемые числа
+                    result += numbersWithEnding[(number / 1000) - 1]
+                }
+                number %= 1000
+                println("number after == 4 : $number")
+            }
+            if (('ь' == result[result.lastIndex]) ||
+                ('о' == result[result.lastIndex]) ||
+                ('т' == result[result.lastIndex])
+            ) { // проверка последнего символа для склонения тысяч
+                result += " "
+                result += numberByThousands[0]
+            } else {
+                if ('а' == result[result.lastIndex]) {
+                    result += " "
+                    result += numberByThousands[1]
+                } else {
+                    if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                        result += " "
+                        result += numberByThousands[2]
+                    }
+                }
+            }
+            if (digitNumber(number) == 3) {
+                println("number == 3 : $number")
+                result += " "
+                result += numbersByHundreds[(number / 100) - 1] // первое число
+                number %= 100
+                println("number after == 3 : $number")
+            }
+            if (digitNumber(number) == 2) {
+                if ((number == 10) || (number > 19)) { // второе число десятки
+                    println("number by tens == 2 : $number")
+                    result += " "
+                    result += numbersByTens[(number / 10) - 1]
+                    number %= 10
+                    println("number after by tens == 2 : $number")
+                }
+                if ((number < 20) && (number > 10)) { // второе число 10-19
+                    println("number 10-19 == 2: $number")
+                    result += " "
+                    result += numbersToNineteen[(number % 10) - 1]
+                    number = 0
+                    println("number after 10-19 == 2 : $number")
+                }
+            }
+            if ((digitNumber(number) == 1) && (number != 0)) {
+                println("number == 1 : $number")
+                result += " "
+                result += numbersToNine[number] // третье число +
+            }
+            number = 0
+        }
+
+        if (digitNumber(number) == 4) {
+            if (digitNumber(number) == 4) { // первое число
+                println("number == 4 : $number")
+                if ((number / 1000) !in 1..2) { // несклоняемые числа
+                    result += numbersToNine[number / 1000]
+                }
+                if ((number / 1000) in 1..2) { // склоняемые числа
+                    result += numbersWithEnding[(number / 1000) - 1]
+                }
+                number %= 1000
+                println("number after == 4 : $number")
+            }
+            if (('ь' == result[result.lastIndex]) ||
+                ('о' == result[result.lastIndex]) ||
+                ('т' == result[result.lastIndex])
+            ) { // проверка последнего символа для склонения тысяч
+                result += " "
+                result += numberByThousands[0]
+            } else {
+                if ('а' == result[result.lastIndex]) {
+                    result += " "
+                    result += numberByThousands[1]
+                } else {
+                    if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                        result += " "
+                        result += numberByThousands[2]
+                    }
+                }
+            }
+            if (digitNumber(number) == 3) {
+                println("number == 3 : $number")
+                result += " "
+                result += numbersByHundreds[(number / 100) - 1] // первое число
+                number %= 100
+                println("number after == 3 : $number")
+            }
+            if (digitNumber(number) == 2) {
+                if ((number == 10) || (number > 19)) { // второе число десятки
+                    println("number by tens == 2 : $number")
+                    result += " "
+                    result += numbersByTens[(number / 10) - 1]
+                    number %= 10
+                    println("number after by tens == 2 : $number")
+                }
+                if ((number < 20) && (number > 10)) { // второе число 10-19
+                    println("number 10-19 == 2: $number")
+                    result += " "
+                    result += numbersToNineteen[(number % 10) - 1]
+                    number = 0
+                    println("number after 10-19 == 2 : $number")
+                }
+            }
+            if ((digitNumber(number) == 1) && (number != 0)) {
+                println("number == 1 : $number")
+                result += " "
+                result += numbersToNine[number] // третье число +
+            }
+            number = 0
+        }
+
+        if (digitNumber(number) == 3) {
+            println("number == 3 : $number")
+            result += numbersByHundreds[(number / 100) - 1] // первое число
+            number %= 100
+            println("number after == 3 : $number")
+            if (digitNumber(number) == 2) {
+                if ((number == 10) || (number > 19)) { // второе число десятки
+                    println("number by tens == 2 : $number")
+                    result += " "
+                    result += numbersByTens[(number / 10) - 1]
+                    number %= 10
+                    println("number after by tens == 2 : $number")
+                }
+                if ((number < 20) && (number > 10)) { // второе число 10-19
+                    println("number 10-19 == 2: $number")
+                    result += " "
+                    result += numbersToNineteen[(number % 10) - 1]
+                    number = 0
+                    println("number after 10-19 == 2 : $number")
+                }
+            }
+            if ((digitNumber(number) == 1) && (number != 0)) {
+                println("number == 1 : $number")
+                result += " "
+                result += numbersToNine[number] // третье число +
+            }
+            number = 0
+        }
+
+        if (digitNumber(number) == 2) {
+            if ((number == 10) || (number > 19)) { // второе число десятки
+                println("number by tens == 2 : $number")
+                result += numbersByTens[(number / 10) - 1]
+                number %= 10
+                println("number after by tens == 2 : $number")
+            }
+            if ((number < 20) && (number > 10)) { // второе число 10-19
+                println("number 10-19 == 2: $number")
+                result += numbersToNineteen[(number % 10) - 1]
+                number = 0
+                println("number after 10-19 == 2 : $number")
+            }
+            if ((digitNumber(number) == 1) && (number != 0)) {
+                println("number == 1 : $number")
+                result += " "
+                result += numbersToNine[number] // третье число +
+            }
+            number = 0
+        }
+
+        if ((digitNumber(number) == 1) && (number != 0)) {
+            println("number == 1 : $number")
+            result += " "
+            result += numbersToNine[number] // третье число +
+        }
+    }
+    return result
+}
+
+private fun digitNumber(n: Int): Int {
+    var number = n
+    var count = 0
+    if (n == 0) count++ else {
+        while ((number > 0) || (number < 0)) {
+            count++
+            number /= 10
+        }
+    }
+    return count
+}

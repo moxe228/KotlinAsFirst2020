@@ -202,6 +202,7 @@ class Tests {
         assertEquals("z", convertToString(35, 36))
         assertEquals("a02220281", convertToString(Int.MAX_VALUE, 11))
         assertEquals("0", convertToString(0, 2))
+        assertEquals("a7492", convertToString(870912, 17))
     }
 
     @Test
