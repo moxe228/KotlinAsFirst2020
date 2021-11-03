@@ -238,78 +238,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
-    var result = ""
-    var number = n
-    val arrOne = arrayListOf<Char>(
-        'a',
-        'b',
-        'c',
-        'd',
-        'e',
-        'f',
-        'g',
-        'h',
-        'i',
-        'j',
-        'k',
-        'l',
-        'm',
-        'n',
-        'o',
-        'p',
-        'q',
-        'r',
-        's',
-        't',
-        'u',
-        'v',
-        'w',
-        'x',
-        'y',
-        'z'
-    )
-    println("Number -> $n")
-    if (n > 0) {
-        if (number > base) {
-            while (number >= base) {
-                if ((number % base) > 9) {
-                    result += arrOne[(number % base) % 10]
-                } else {
-                    result += (number % base).toString()
-                    println("Cycle 2 -> $number ")
-                }
-                number /= base
-            }
-        }
-        if ((n >= 10) && (base > n)) {
-            result += arrOne[base - 11]
-            println("Cycle 3 -> $number ")
-        } else {
-            if ((base > 10) && (number == (base - 1))) {
-                result += arrOne[base - 11]
-                number /= base
-                println("Cycle 4 -> $number ")
-            }
-            if (number > 0) {
-                if ((base > 10) && (number == (base - 1))) {
-                    println("Before Cycle 5 Number -> $number ")
-                    println("Before Cycle 6 Result -> $result ")
-                    result += arrOne[base - 11]
-                    number /= base
-                    println("Cycle 5 -> $number ")
-                }
-                if (number > 0) {
-                    result += (number % base).toString()
-                    println("Cycle 6 -> $number ")
-                }
-            }
-        }
-    } else {
-        result += '0'
-    }
-    return result.reversed()
-}
+fun convertToString(n: Int, base: Int): String = TODO()
 
 /**
  * Средняя (3 балла)
@@ -345,47 +274,18 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
 fun roman(n: Int): String {
     var result = ""
     var number = n
-    var array = arrayListOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
-    while (number > 10) {
-        while (number >= 1000) {
-            result += 'M'
-            number -= 1000
-        }
-        while (number >= 900) {
-            result += "CM"
-            number -= 900
-        }
-        while (number >= 500) {
-            result += 'D'
-            number -= 500
-        }
-        while (number >= 400) {
-            result += "CD"
-            number -= 400
-        }
-        while (number >= 100) {
-            result += 'C'
-            number -= 100
-        }
-        while (number >= 90) {
-            result += "XC"
-            number -= 90
-        }
-        while (number >= 50) {
-            result += 'L'
-            number -= 50
-        }
-        while (number >= 40) {
-            result += "XL"
-            number -= 40
-        }
-        while (number >= 10) {
-            result += 'X'
-            number -= 10
+    val romanNumbersToTen = arrayListOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val romanNumbersToThousand = arrayListOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X")
+    val equalRomans = arrayListOf(1000, 900, 500, 400, 100, 90, 50, 40, 10)
+
+    for (i in 0..romanNumbersToThousand.lastIndex) {
+        while (number >= equalRomans[i]) {
+            result += romanNumbersToThousand[i]
+            number -= equalRomans[i]
         }
     }
     if ((number < 10) && (number != 0)) {
-        result += array[number - 1]
+        result += romanNumbersToTen[number - 1]
     }
     return result
 }
