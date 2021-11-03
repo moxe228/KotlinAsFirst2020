@@ -578,7 +578,6 @@ fun russian(n: Int): String {
     }
 
     if ((digitNumber(number) == 1) && (number != 0)) {
-        result += " "
         result += numbersToNine[number]
     }
 
