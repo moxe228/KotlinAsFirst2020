@@ -434,11 +434,8 @@ fun russian(n: Int): String {
             number %= 10000
         }
         if (((number / 1000) > 10) && ((number / 1000) < 20)) {
-            println("number 10-19 : ${(number % 10) - 1}")
-            println("number : $number")
             result += numbersToNineteen[(number % 10) + 1]
             number %= 1000
-            println("number after : $number")
         }
         if (digitNumber(number) == 4) {
             result += " "
