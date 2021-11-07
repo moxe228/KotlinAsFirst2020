@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import ru.spbstu.kotlin.typeclass.classes.defaultValue
+import ru.spbstu.wheels.identityEquals
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -296,9 +297,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var result: Pair<Int, Int> = -1 to -1
 
     for (i in list.indices) {
-        if ((number - list[i] in list) && (i != list.indexOf(number - list[i]))) {
-            result = result.first to (minOf(i, list.indexOf(number - list[i])))
-            result = result.second to (maxOf(i, list.indexOf(number - list[i])))
+        val temp = list.indexOf(number - list[i])
+        if ((number - list[i] in list) && (i != temp)) {
+            result = result.first to (minOf(i, temp))
+            result = result.second to (maxOf(i, temp))
         }
     }
 
