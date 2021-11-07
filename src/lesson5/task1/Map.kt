@@ -197,8 +197,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             }
         }
     }
-
-    return type
+    return if ((stuff.isEmpty()) && (kind.isEmpty())) null else type
 }
 
 /**
@@ -293,7 +292,20 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+
+    var result: Pair<Int, Int> = -1 to -1
+    println("list : $list")
+    for (i in list.indices) {
+        if ((number - list[i] in list)) { // добавить условие "не брать число два раза"
+            println("before : $result")
+            result = result.first to (minOf(i, list.indexOf(number - list[i])))
+            result = result.second to (maxOf(i, list.indexOf(number - list[i])))
+            println("after : $result")
+        }
+    }
+    return result
+}
 
 /**
  * Очень сложная (8 баллов)
