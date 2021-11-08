@@ -103,7 +103,7 @@ fun dateStrToDigit(str: String): String {
         }
         if (i == 2) {
             year = part.toInt()
-            result = String.format("%02d.%02d.%02d", day, month, year)
+            result = String.format("%02d.%02d.%d", day, month, year)
             if ((month == 2 && day > 28) || month == 0 || day > 31) {
                 result = ""
                 break
