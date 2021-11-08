@@ -131,10 +131,6 @@ fun mean(list: List<Double>): Double {
     val temporary = list.sum() / list.size
     if (temporary != 0.0 && !temporary.isNaN()) {
         return temporary
-    } else {
-        if (temporary == 0.0) {
-            return 0.0
-        }
     }
     return 0.0
 }
@@ -238,7 +234,42 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var result = ""
+    var number = n
+    val list = ('a'..'z').toList()
+    if (n > 0) {
+        if (number > base) {
+            while (number >= base) {
+                if ((number % base) > 9) {
+                    result += list[(number % base) % 10]
+                } else {
+                    result += (number % base).toString()
+                }
+                number /= base
+            }
+        }
+        if ((n >= 10) && (base >= n)) {
+            result += list[base - 11]
+        } else {
+            if ((base > 10) && (number == (base - 1))) {
+                result += list[base - 11]
+                number /= base
+            }
+            if (number > 0) {
+                if (number >= 10) {
+                    result += list[number % 10]
+                } else {
+                    result += (number % base).toString()
+                }
+            }
+        }
+    } else {
+        result += '0'
+    }
+    return result.reversed()
+
+}
 
 /**
  * Средняя (3 балла)
@@ -300,7 +331,7 @@ fun roman(n: Int): String {
 fun russian(n: Int): String {
     var result = ""
     var number = n
-    val numbersToNine = arrayListOf(
+    val numbersToNine = listOf(
         "ноль",
         "один",
         "два",
@@ -312,11 +343,11 @@ fun russian(n: Int): String {
         "восемь",
         "девять",
     )
-    val numbersWithEnding = arrayListOf(
+    val numbersWithEnding = listOf(
         "одна",
         "две"
     )
-    val numbersToNineteen = arrayListOf(
+    val numbersToNineteen = listOf(
         "одиннадцать",
         "двенадцать",
         "тринадцать",
@@ -327,7 +358,7 @@ fun russian(n: Int): String {
         "восемнадцать",
         "девятнадцать"
     )
-    val numbersByTens = arrayListOf(
+    val numbersByTens = listOf(
         "десять",
         "двадцать",
         "тридцать",
@@ -338,7 +369,7 @@ fun russian(n: Int): String {
         "восемьдесят",
         "девяносто"
     )
-    val numbersByHundreds = arrayListOf(
+    val numbersByHundreds = listOf(
         "сто",
         "двести",
         "триста",
@@ -349,19 +380,23 @@ fun russian(n: Int): String {
         "восемьсот",
         "девятьсот"
     )
-    val numberByThousands = arrayListOf(
+    val numberByThousands = listOf(
         "тысяч",
         "тысяча",
         "тысячи"
     )
     var hundredsThousandsEnding = true
 
-    if (digitNumber(number) == 6) {
-        result += numbersByHundreds[(number / 100000) - 1]
-        number %= 100000
+    if (digitNumber(number) > 1) {
+        if (digitNumber(number) == 6) {
+            result += numbersByHundreds[(number / 100000) - 1]
+            number %= 100000
+        }
         if (digitNumber(number) == 5) {
             hundredsThousandsEnding = false
-            result += " "
+            if (n > 100000) {
+                result += " "
+            }
             if (((number / 1000) == 10) || ((number / 1000) > 19)) {
                 result += numbersByTens[(number / 10000) - 1]
                 number %= 10000
@@ -373,205 +408,68 @@ fun russian(n: Int): String {
         }
         if (digitNumber(number) == 4) {
             hundredsThousandsEnding = false
-            result += " "
+            if (n > 10000) {
+                result += " "
+            }
             if ((number / 1000) !in 1..2) {
                 result += numbersToNine[number / 1000]
             }
             if ((number / 1000) in 1..2) {
                 result += numbersWithEnding[(number / 1000) - 1]
             }
-            number %= 1000
         }
-        if (hundredsThousandsEnding) {
-            result += " "
-            result += numberByThousands[0]
-        } else {
-            if (('ь' == result[result.lastIndex]) ||
-                ('о' == result[result.lastIndex]) ||
-                ('т' == result[result.lastIndex])
-            ) {
+        number %= 1000
+        if (n > 1000) {
+            if (hundredsThousandsEnding) {
                 result += " "
                 result += numberByThousands[0]
             } else {
-                if ('а' == result[result.lastIndex]) {
+                if (('ь' == result[result.lastIndex]) ||
+                    ('о' == result[result.lastIndex]) ||
+                    ('т' == result[result.lastIndex])
+                ) {
                     result += " "
-                    result += numberByThousands[1]
+                    result += numberByThousands[0]
                 } else {
-                    if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                    if ('а' == result[result.lastIndex]) {
                         result += " "
-                        result += numberByThousands[2]
+                        result += numberByThousands[1]
+                    } else {
+                        if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                            result += " "
+                            result += numberByThousands[2]
+                        }
                     }
                 }
             }
         }
         if (digitNumber(number) == 3) {
-            result += " "
+            if (n > 1000) {
+                result += " "
+            }
             result += numbersByHundreds[(number / 100) - 1]
             number %= 100
         }
         if (digitNumber(number) == 2) {
             if ((number == 10) || (number > 19)) {
-                result += " "
-                result += numbersByTens[(number / 10) - 1]
-                number %= 10
-            }
-            if ((number < 20) && (number > 10)) {
-                result += " "
-                result += numbersToNineteen[(number % 10) - 1]
-                number = 0
-            }
-        }
-        if ((digitNumber(number) == 1) && (number != 0)) {
-            result += " "
-            result += numbersToNine[number]
-        }
-        number = 0
-    }
-
-    if (digitNumber(number) == 5) {
-        if (((number / 1000) == 10) || ((number / 1000) > 19)) {
-            result += numbersByTens[((number / 1000) / 10) - 1]
-            number %= 10000
-        }
-        if (((number / 1000) > 10) && ((number / 1000) < 20)) {
-            result += numbersToNineteen[(number % 10) + 1]
-            number %= 1000
-        }
-        if (digitNumber(number) == 4) {
-            result += " "
-            if ((number / 1000) !in 1..2) {
-                result += numbersToNine[number / 1000]
-            }
-            if ((number / 1000) in 1..2) {
-                result += numbersWithEnding[(number / 1000) - 1]
-            }
-            number %= 1000
-        }
-        if (('ь' == result[result.lastIndex]) ||
-            ('о' == result[result.lastIndex]) ||
-            ('т' == result[result.lastIndex])
-        ) {
-            result += " "
-            result += numberByThousands[0]
-        } else {
-            if ('а' == result[result.lastIndex]) {
-                result += " "
-                result += numberByThousands[1]
-            } else {
-                if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                if (n > 100) {
                     result += " "
-                    result += numberByThousands[2]
                 }
-            }
-        }
-        if (digitNumber(number) == 3) {
-            result += " "
-            result += numbersByHundreds[(number / 100) - 1]
-            number %= 100
-        }
-        if (digitNumber(number) == 2) {
-            if ((number == 10) || (number > 19)) {
-                result += " "
                 result += numbersByTens[(number / 10) - 1]
                 number %= 10
             }
             if ((number < 20) && (number > 10)) {
-                result += " "
-                result += numbersToNineteen[(number % 10) - 1]
-                number = 0
-            }
-        }
-        if ((digitNumber(number) == 1) && (number != 0)) {
-            result += " "
-            result += numbersToNine[number]
-        }
-        number = 0
-    }
-
-    if (digitNumber(number) == 4) {
-        if (digitNumber(number) == 4) {
-            if ((number / 1000) !in 1..2) {
-                result += numbersToNine[number / 1000]
-            }
-            if ((number / 1000) in 1..2) {
-                result += numbersWithEnding[(number / 1000) - 1]
-            }
-            number %= 1000
-        }
-        if (('ь' == result[result.lastIndex]) ||
-            ('о' == result[result.lastIndex]) ||
-            ('т' == result[result.lastIndex])
-        ) {
-            result += " "
-            result += numberByThousands[0]
-        } else {
-            if ('а' == result[result.lastIndex]) {
-                result += " "
-                result += numberByThousands[1]
-            } else {
-                if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
+                if (n > 100) {
                     result += " "
-                    result += numberByThousands[2]
                 }
-            }
-        }
-        if (digitNumber(number) == 3) {
-            result += " "
-            result += numbersByHundreds[(number / 100) - 1]
-            number %= 100
-        }
-        if (digitNumber(number) == 2) {
-            if ((number == 10) || (number > 19)) {
-                result += " "
-                result += numbersByTens[(number / 10) - 1]
-                number %= 10
-            }
-            if ((number < 20) && (number > 10)) {
-                result += " "
                 result += numbersToNineteen[(number % 10) - 1]
                 number = 0
             }
         }
         if ((digitNumber(number) == 1) && (number != 0)) {
-            result += " "
-            result += numbersToNine[number]
-        }
-        number = 0
-    }
-
-    if (digitNumber(number) == 3) {
-        result += numbersByHundreds[(number / 100) - 1]
-        number %= 100
-        if (digitNumber(number) == 2) {
-            if ((number == 10) || (number > 19)) {
+            if (n > 10) {
                 result += " "
-                result += numbersByTens[(number / 10) - 1]
-                number %= 10
             }
-            if ((number < 20) && (number > 10)) {
-                result += " "
-                result += numbersToNineteen[(number % 10) - 1]
-                number = 0
-            }
-        }
-        if ((digitNumber(number) == 1) && (number != 0)) {
-            result += " "
-            result += numbersToNine[number]
-        }
-        number = 0
-    }
-
-    if (digitNumber(number) == 2) {
-        if ((number == 10) || (number > 19)) {
-            result += numbersByTens[(number / 10) - 1]
-            number %= 10
-        }
-        if ((number < 20) && (number > 10)) {
-            result += numbersToNineteen[(number % 10) - 1]
-            number = 0
-        }
-        if ((digitNumber(number) == 1) && (number != 0)) {
-            result += " "
             result += numbersToNine[number]
         }
         number = 0
