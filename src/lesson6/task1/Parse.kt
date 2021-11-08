@@ -112,7 +112,7 @@ fun dateStrToDigit(str: String): String {
             if (((divByFour) && (month == 2) && day > 29) ||
                 ((!divByFour) && (month == 2) && day > 28) ||
                 (month in listThirtyDays && day > 30) ||
-                ((month == 0 || day == 0) || (day > 31))
+                ((month == 0 || day == 0) || (day > 31) || (year > 1000000))
             ) {
                 result = ""
                 break
