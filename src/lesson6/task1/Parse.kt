@@ -109,7 +109,10 @@ fun dateStrToDigit(str: String): String {
                 divBy4 = true
             }
             result = String.format("%02d.%02d.%d", day, month, year)
-            if (((divBy4 == true) && (month == 2) && day > 29) || (!divBy4 && (month == 2) && day > 28) || (month in listThirtyDays && day > 30) || (month == 0 || day == 0) || (day > 31)
+            if (((divBy4 == true) && (month == 2) && day > 29) ||
+                (!divBy4 && (month == 2) && day > 28) ||
+                (month in listThirtyDays && day > 30) ||
+                ((month == 0 || day == 0) || (day > 31))
             ) {
                 result = ""
                 break
