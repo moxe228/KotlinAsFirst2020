@@ -94,7 +94,7 @@ fun dateStrToDigit(str: String): String {
         "ноября",
         "декабря"
     )
-    var divBy4 = false
+    var divByFour = false
     val listThirtyDays = listOf(4, 6, 9, 11)
     for ((i, part) in parts.withIndex()) {
         if (i == 0) {
@@ -106,11 +106,11 @@ fun dateStrToDigit(str: String): String {
         if (i == 2) {
             year = part.toInt()
             if (year % 4 == 0) {
-                divBy4 = true
+                divByFour = true
             }
             result = String.format("%02d.%02d.%d", day, month, year)
-            if (((divBy4 == true) && (month == 2) && day > 29) ||
-                (!divBy4 && (month == 2) && day > 28) ||
+            if (((divByFour) && (month == 2) && day > 29) ||
+                ((!divByFour) && (month == 2) && day > 28) ||
                 (month in listThirtyDays && day > 30) ||
                 ((month == 0 || day == 0) || (day > 31))
             ) {
