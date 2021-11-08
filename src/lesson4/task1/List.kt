@@ -425,7 +425,8 @@ fun russian(n: Int): String {
             } else {
                 if (('ь' == result[result.lastIndex]) ||
                     ('о' == result[result.lastIndex]) ||
-                    ('т' == result[result.lastIndex])
+                    ('т' == result[result.lastIndex]) ||
+                    ('к' == result[result.lastIndex])
                 ) {
                     result += " "
                     result += numberByThousands[0]
