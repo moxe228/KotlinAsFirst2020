@@ -192,8 +192,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 
     for ((value) in stuff) {
         if (stuff[value]?.first == kind) {
-            if (stuff[value]?.second!! <= min) {
-                min = stuff[value]?.second!!
+            if ((stuff[value]?.second ?: 0.0) <= min) {
+                min = stuff[value]?.second ?: 0.0
                 type = value
             }
         }
@@ -295,15 +295,12 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var result: Pair<Int, Int> = -1 to -1
-
     for (i in list.indices) {
         val temp = list.indexOf(number - list[i])
         if ((number - list[i] in list) && (i != temp)) {
-            result = result.first to (minOf(i, temp))
-            result = result.second to (maxOf(i, temp))
+            result = (minOf(i, temp)) to (maxOf(i, temp))
         }
     }
-
     return result
 }
 
