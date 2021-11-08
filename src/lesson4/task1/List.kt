@@ -242,7 +242,7 @@ fun convertToString(n: Int, base: Int): String {
         if (number > base) {
             while (number >= base) {
                 if ((number % base) > 9) {
-                    result += list[(number % base) % 10]
+                    result += list[(number % base) - 10]
                 } else {
                     result += (number % base).toString()
                 }
@@ -258,7 +258,7 @@ fun convertToString(n: Int, base: Int): String {
             }
             if (number > 0) {
                 if (number >= 10) {
-                    result += list[number % 10]
+                    result += list[number - 10]
                 } else {
                     result += (number % base).toString()
                 }
@@ -268,7 +268,6 @@ fun convertToString(n: Int, base: Int): String {
         result += '0'
     }
     return result.reversed()
-
 }
 
 /**
