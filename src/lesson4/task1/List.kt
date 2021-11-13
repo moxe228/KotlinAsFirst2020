@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -127,13 +128,7 @@ fun abs(v: List<Double>): Double = TODO()
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    val temporary = list.sum() / list.size
-    if (temporary != 0.0 && !temporary.isNaN()) {
-        return temporary
-    }
-    return 0.0
-}
+fun mean(list: List<Double>) = if (!(list.sum() / list.size).isNaN()) (list.sum() / list.size) else 0.0
 
 /**
  * Средняя (3 балла)
@@ -236,38 +231,18 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     var result = ""
-    var number = n
+    val number = convert(n, base)
     val list = ('a'..'z').toList()
-    if (n > 0) {
-        if (number > base) {
-            while (number >= base) {
-                if ((number % base) > 9) {
-                    result += list[(number % base) - 10]
-                } else {
-                    result += (number % base).toString()
-                }
-                number /= base
-            }
-        }
-        if ((n >= 10) && (base >= n)) {
-            result += list[base - 11]
+
+    for (i in number.indices) {
+        if (number[i] >= 10) {
+            result += list[number[i] - 10]
         } else {
-            if ((base > 10) && (number == (base - 1))) {
-                result += list[base - 11]
-                number /= base
-            }
-            if (number > 0) {
-                if (number >= 10) {
-                    result += list[number - 10]
-                } else {
-                    result += (number % base).toString()
-                }
-            }
+            result += number[i]
         }
-    } else {
-        result += '0'
     }
-    return result.reversed()
+
+    return result
 }
 
 /**
@@ -301,13 +276,14 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
+
+val romanNumbersToTen = arrayListOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+val romanNumbersToThousand = arrayListOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X")
+val equalRomans = arrayListOf(1000, 900, 500, 400, 100, 90, 50, 40, 10)
+
 fun roman(n: Int): String {
     var result = ""
     var number = n
-    val romanNumbersToTen = arrayListOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
-    val romanNumbersToThousand = arrayListOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X")
-    val equalRomans = arrayListOf(1000, 900, 500, 400, 100, 90, 50, 40, 10)
-
     for (i in 0..romanNumbersToThousand.lastIndex) {
         while (number >= equalRomans[i]) {
             result += romanNumbersToThousand[i]
@@ -327,82 +303,86 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
+
+val numbersToNine = listOf(
+    "ноль",
+    "один",
+    "два",
+    "три",
+    "четыре",
+    "пять",
+    "шесть",
+    "семь",
+    "восемь",
+    "девять",
+)
+val numbersWithEnding = listOf(
+    "одна",
+    "две"
+)
+val numbersToNineteen = listOf(
+    "одиннадцать",
+    "двенадцать",
+    "тринадцать",
+    "четырнадцать",
+    "пятнадцать",
+    "шестнадцать",
+    "семнадцать",
+    "восемнадцать",
+    "девятнадцать"
+)
+val numbersByTens = listOf(
+    "десять",
+    "двадцать",
+    "тридцать",
+    "сорок",
+    "пятьдесят",
+    "шестьдесят",
+    "семьдесят",
+    "восемьдесят",
+    "девяносто"
+)
+val numbersByHundreds = listOf(
+    "сто",
+    "двести",
+    "триста",
+    "четыреста",
+    "пятьсот",
+    "шестьсот",
+    "семьсот",
+    "восемьсот",
+    "девятьсот"
+)
+val numberByThousands = listOf(
+    "тысяч",
+    "тысяча",
+    "тысячи"
+)
+
 fun russian(n: Int): String {
     var result = ""
     var number = n
-    val numbersToNine = listOf(
-        "ноль",
-        "один",
-        "два",
-        "три",
-        "четыре",
-        "пять",
-        "шесть",
-        "семь",
-        "восемь",
-        "девять",
-    )
-    val numbersWithEnding = listOf(
-        "одна",
-        "две"
-    )
-    val numbersToNineteen = listOf(
-        "одиннадцать",
-        "двенадцать",
-        "тринадцать",
-        "четырнадцать",
-        "пятнадцать",
-        "шестнадцать",
-        "семнадцать",
-        "восемнадцать",
-        "девятнадцать"
-    )
-    val numbersByTens = listOf(
-        "десять",
-        "двадцать",
-        "тридцать",
-        "сорок",
-        "пятьдесят",
-        "шестьдесят",
-        "семьдесят",
-        "восемьдесят",
-        "девяносто"
-    )
-    val numbersByHundreds = listOf(
-        "сто",
-        "двести",
-        "триста",
-        "четыреста",
-        "пятьсот",
-        "шестьсот",
-        "семьсот",
-        "восемьсот",
-        "девятьсот"
-    )
-    val numberByThousands = listOf(
-        "тысяч",
-        "тысяча",
-        "тысячи"
-    )
     var hundredsThousandsEnding = true
+    var thousandsNeeded = true
 
-    if (digitNumber(number) > 1) {
-        if (digitNumber(number) == 6) {
-            result += numbersByHundreds[(number / 100000) - 1]
-            number %= 100000
+    while (digitNumber(number) > 1) {
+        if (digitNumber(number) == 6 || digitNumber(number) == 3) {
+            if (n > 10.0.pow(digitNumber(number)).toInt()) result += " "
+            result += numbersByHundreds[(number / 10.0.pow(digitNumber(number) - 1).toInt()) - 1]
+            number %= 10.0.pow(digitNumber(number) - 1).toInt()
         }
-        if (digitNumber(number) == 5) {
-            hundredsThousandsEnding = false
-            if (n > 100000) {
-                result += " "
+        if (digitNumber(number) == 5 || digitNumber(number) == 2) {
+            var temp = number / 1000
+            if (digitNumber(number) == 2) temp = number
+            if (digitNumber(number) == 5) hundredsThousandsEnding = false
+            if (n > 10.0.pow(digitNumber(number)).toInt()) result += " "
+            if (temp == 10 || temp > 19) {
+                result += numbersByTens[(temp / 10) - 1]
+                number %= if (digitNumber(number) == 5) 10000 else 10
             }
-            if (((number / 1000) == 10) || ((number / 1000) > 19)) {
-                result += numbersByTens[(number / 10000) - 1]
-                number %= 10000
-            }
-            if (((number / 1000) < 20) && ((number / 1000) > 10)) {
-                result += numbersToNineteen[((number / 1000) % 10) - 1]
-                number %= 1000
+            if (temp in 11..19) {
+                result += numbersToNineteen[(temp % 10) - 1]
+                if (digitNumber(number) == 5) number %= 1000 else number = 0
             }
         }
         if (digitNumber(number) == 4) {
@@ -418,67 +398,31 @@ fun russian(n: Int): String {
             }
         }
         number %= 1000
-        if (n > 1000) {
-            if (hundredsThousandsEnding) {
-                result += " "
-                result += numberByThousands[0]
+        if (n > 1000 && thousandsNeeded) {
+            if (hundredsThousandsEnding)  {
+                result += " " + numberByThousands[0]
             } else {
                 if (('ь' == result[result.lastIndex]) ||
                     ('о' == result[result.lastIndex]) ||
                     ('т' == result[result.lastIndex]) ||
                     ('к' == result[result.lastIndex])
                 ) {
-                    result += " "
-                    result += numberByThousands[0]
+                    result += " " + numberByThousands[0]
+                } else if ('а' == result[result.lastIndex]) {
+                    result += " " + numberByThousands[1]
                 } else {
-                    if ('а' == result[result.lastIndex]) {
-                        result += " "
-                        result += numberByThousands[1]
-                    } else {
-                        if (('и' == result[result.lastIndex]) || ('е' == result[result.lastIndex])) {
-                            result += " "
-                            result += numberByThousands[2]
-                        }
-                    }
+                    result += " " + numberByThousands[2]
                 }
             }
+            thousandsNeeded = false
         }
-        if (digitNumber(number) == 3) {
-            if (n > 1000) {
-                result += " "
-            }
-            result += numbersByHundreds[(number / 100) - 1]
-            number %= 100
-        }
-        if (digitNumber(number) == 2) {
-            if ((number == 10) || (number > 19)) {
-                if (n > 100) {
-                    result += " "
-                }
-                result += numbersByTens[(number / 10) - 1]
-                number %= 10
-            }
-            if ((number < 20) && (number > 10)) {
-                if (n > 100) {
-                    result += " "
-                }
-                result += numbersToNineteen[(number % 10) - 1]
-                number = 0
-            }
-        }
-        if ((digitNumber(number) == 1) && (number != 0)) {
-            if (n > 10) {
-                result += " "
-            }
-            result += numbersToNine[number]
-        }
-        number = 0
     }
-
     if ((digitNumber(number) == 1) && (number != 0)) {
+        if (n > 10) {
+            result += " "
+        }
         result += numbersToNine[number]
     }
-
     return result
 }
 

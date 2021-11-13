@@ -74,27 +74,30 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+
+val months = listOf(
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря"
+)
+
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     var result = ""
     var day = 1
     var month = 1
     var year = 0
-    val months = listOf(
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-    )
-    var divByFour = false
+
+    var leap = false
     val listThirtyDays = listOf(4, 6, 9, 11)
     for ((i, part) in parts.withIndex()) {
         if (i == 0) {
@@ -105,12 +108,9 @@ fun dateStrToDigit(str: String): String {
         }
         if (i == 2) {
             year = part.toInt()
-            if (year % 4 == 0) {
-                divByFour = true
-            }
+            if (year % 4 == 0 && (year % 100 != 0) || (year % 400 == 0)) leap = true
             result = String.format("%02d.%02d.%d", day, month, year)
-            if (((divByFour) && (month == 2) && day > 29) ||
-                ((!divByFour) && (month == 2) && day > 28) ||
+            if (((leap == false) && month == 2 && day == 29) ||
                 (month in listThirtyDays && day > 30) ||
                 ((month == 0 || day == 0) || (day > 31))
             ) {
