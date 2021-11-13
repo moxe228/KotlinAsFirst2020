@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import java.lang.NumberFormatException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -96,29 +98,32 @@ fun dateStrToDigit(str: String): String {
     var day = 1
     var month = 1
     var year = 0
-
     var leap = false
     val listThirtyDays = listOf(4, 6, 9, 11)
-    for ((i, part) in parts.withIndex()) {
-        if (i == 0) {
-            day = part.toInt()
-        }
-        if (i == 1) {
-            month = months.indexOf(part) + 1
-        }
-        if (i == 2) {
-            year = part.toInt()
-            if (year % 4 == 0 && (year % 100 != 0) || (year % 400 == 0)) leap = true
-            result = String.format("%02d.%02d.%d", day, month, year)
-            if (((leap == false) && month == 2 && day >= 29) ||
-                ((day >= 30) && (month == 2)) ||
-                (month in listThirtyDays && day > 30) ||
-                ((month == 0 || day == 0) || (day > 31))
-            ) {
-                result = ""
-                break
+    try {
+        for ((i, part) in parts.withIndex()) {
+            if (i == 0) {
+                day = part.toInt()
+            }
+            if (i == 1) {
+                month = months.indexOf(part) + 1
+            }
+            if (i == 2) {
+                year = part.toInt()
+                if (year % 4 == 0 && (year % 100 != 0) || (year % 400 == 0)) leap = true
+                result = String.format("%02d.%02d.%d", day, month, year)
+                if (((leap == false) && month == 2 && day >= 29) ||
+                    ((day >= 30) && (month == 2)) ||
+                    (month in listThirtyDays && day > 30) ||
+                    ((month == 0 || day == 0) || (day > 31))
+                ) {
+                    result = ""
+                    break
+                }
             }
         }
+    } catch (e: NumberFormatException) {
+        result = ""
     }
     return result
 }
