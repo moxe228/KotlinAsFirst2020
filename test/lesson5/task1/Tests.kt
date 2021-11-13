@@ -320,6 +320,10 @@ class Tests {
             Pair(1, 2),
             findSumOfTwo(listOf(1, 2, 3), 5)
         )
+        assertEquals(
+            Pair(-1, -1),
+            findSumOfTwo(listOf(0), 0)
+        )
     }
 
     @Test
