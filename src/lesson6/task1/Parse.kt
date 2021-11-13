@@ -111,6 +111,7 @@ fun dateStrToDigit(str: String): String {
             if (year % 4 == 0 && (year % 100 != 0) || (year % 400 == 0)) leap = true
             result = String.format("%02d.%02d.%d", day, month, year)
             if (((leap == false) && month == 2 && day >= 29) ||
+                ((day >= 30) && (month == 2)) ||
                 (month in listThirtyDays && day > 30) ||
                 ((month == 0 || day == 0) || (day > 31))
             ) {
