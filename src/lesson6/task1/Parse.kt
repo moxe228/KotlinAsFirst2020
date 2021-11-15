@@ -2,6 +2,7 @@
 
 package lesson6.task1
 
+import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
 
 // Урок 6: разбор строк, исключения
@@ -166,7 +167,18 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var bestJump = -1
+    val parts = jumps.split(" ", "-", "%").toList().filter { it != "" }
+    try {
+        for (i in parts) {
+            if (bestJump < i.toInt()) bestJump = i.toInt()
+        }
+    } catch (e: IllegalArgumentException) {
+        return -1
+    }
+    return bestJump
+}
 
 /**
  * Сложная (6 баллов)
@@ -201,7 +213,22 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val parts = str.toLowerCase().split(" ").toList()
+    var result = -1
+    var countChars = 0
+    var count = 0
+    if (parts.size > 1) {
+        for (i in parts.indices) {
+            count++
+            if (count > 1) {
+                if (parts[i - 1] == parts[i]) result = countChars
+                countChars += parts[i - 1].length + 1
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Сложная (6 баллов)
