@@ -222,7 +222,10 @@ fun firstDuplicateIndex(str: String): Int {
         for (i in parts.indices) {
             count++
             if (count > 1) {
-                if (parts[i - 1] == parts[i]) result = countChars
+                if (parts[i - 1] == parts[i]) {
+                    result = countChars
+                    break
+                }
                 countChars += parts[i - 1].length + 1
             }
         }

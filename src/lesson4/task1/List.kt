@@ -365,7 +365,7 @@ fun russian(n: Int): String {
     var hundredsThousandsEnding = true
     var thousandsNeeded = true
 
-    while (digitNumber(number) > 1) {
+    while (number > 10) {
         if (digitNumber(number) == 6 || digitNumber(number) == 3) {
             if (n > 10.0.pow(digitNumber(number)).toInt()) result += " "
             result += numbersByHundreds[(number / 10.0.pow(digitNumber(number) - 1).toInt()) - 1]
@@ -373,9 +373,11 @@ fun russian(n: Int): String {
         }
         if (digitNumber(number) == 5 || digitNumber(number) == 2) {
             var temp = number / 1000
-            if (digitNumber(number) == 2) temp = number
-            if (digitNumber(number) == 5) hundredsThousandsEnding = false
             if (n > 10.0.pow(digitNumber(number)).toInt()) result += " "
+            when {
+                digitNumber(number) == 2 -> temp = number
+                digitNumber(number) == 5 -> hundredsThousandsEnding = false
+            }
             if (temp == 10 || temp > 19) {
                 result += numbersByTens[(temp / 10) - 1]
                 number %= if (digitNumber(number) == 5) 10000 else 10
@@ -399,20 +401,14 @@ fun russian(n: Int): String {
         }
         number %= 1000
         if (n > 1000 && thousandsNeeded) {
-            if (hundredsThousandsEnding)  {
-                result += " " + numberByThousands[0]
-            } else {
-                if (('ь' == result[result.lastIndex]) ||
-                    ('о' == result[result.lastIndex]) ||
-                    ('т' == result[result.lastIndex]) ||
-                    ('к' == result[result.lastIndex])
-                ) {
-                    result += " " + numberByThousands[0]
-                } else if ('а' == result[result.lastIndex]) {
-                    result += " " + numberByThousands[1]
-                } else {
-                    result += " " + numberByThousands[2]
-                }
+            result += when {
+                hundredsThousandsEnding -> " " + numberByThousands[0]
+                'ь' == result[result.lastIndex] -> " " + numberByThousands[0]
+                'о' == result[result.lastIndex] -> " " + numberByThousands[0]
+                'т' == result[result.lastIndex] -> " " + numberByThousands[0]
+                'к' == result[result.lastIndex] -> " " + numberByThousands[0]
+                'а' == result[result.lastIndex] -> " " + numberByThousands[1]
+                else -> " " + numberByThousands[2]
             }
             thousandsNeeded = false
         }
