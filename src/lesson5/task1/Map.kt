@@ -199,7 +199,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             }
         }
     }
-    return if ((stuff.isEmpty()) && (kind.isEmpty())) null else type
+    return if ((stuff.isEmpty()) && (kind.isEmpty())) "" else type
 }
 
 /**
