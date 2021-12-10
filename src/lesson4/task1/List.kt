@@ -431,7 +431,6 @@ private fun digitNumber(n: Int): Int {
     }
     return count
 }
-
 fun pow(base: Int, degree: Int): Int {
     var result = 1
     for (i in 1..degree) {

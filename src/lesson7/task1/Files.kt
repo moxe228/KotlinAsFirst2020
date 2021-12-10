@@ -112,13 +112,13 @@ fun sibilants(inputName: String, outputName: String) {
     var toPrint = ""
     var deletedChar = false
     for (line in File(inputName).readLines()) {
-        for (word in line.split('+')) {
+        for (word in line.split("\\n")) {
             if (word.any(wrongChars::contains) && word.any(potential::contains) && (word.length > 1)) {
                 for (i in word.indices) {
                     if (!deletedChar) toPrint += word[i]
                     deletedChar = false
                     if (word[i] in potential) {
-                        if (word[i + 1] in wrongChars) {
+                        if (word[i] in wrongChars) {
                             toPrint += rights[wrongChars.indexOf(word[i + 1])]
                             deletedChar = true
                         }
@@ -134,6 +134,7 @@ fun sibilants(inputName: String, outputName: String) {
     }
     writer.close()
 }
+
 
 /**
  * Средняя (15 баллов)
