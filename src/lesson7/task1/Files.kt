@@ -118,7 +118,7 @@ fun sibilants(inputName: String, outputName: String) {
                     if (!deletedChar) toPrint += word[i]
                     deletedChar = false
                     if (word[i] in potential) {
-                        if (word[i] in wrongChars) {
+                        if (word[i + 1] in wrongChars) {
                             toPrint += rights[wrongChars.indexOf(word[i + 1])]
                             deletedChar = true
                         }
