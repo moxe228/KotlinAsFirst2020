@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -367,16 +366,16 @@ fun russian(n: Int): String {
 
     while (number > 10) {
         if (digitNumber(number) == 6 || digitNumber(number) == 3) {
-            if (n > 10.0.pow(digitNumber(number)).toInt()) result += " "
-            result += numbersByHundreds[(number / 10.0.pow(digitNumber(number) - 1).toInt()) - 1]
-            number %= 10.0.pow(digitNumber(number) - 1).toInt()
+            if (n > pow(10, digitNumber(number))) result += " "
+            result += numbersByHundreds[(number / pow(10, (digitNumber(number) - 1))) - 1]
+            number %= pow(10, (digitNumber(number) - 1))
         }
         if (digitNumber(number) == 5 || digitNumber(number) == 2) {
             var temp = number / 1000
-            if (n > 10.0.pow(digitNumber(number)).toInt()) result += " "
-            when {
-                digitNumber(number) == 2 -> temp = number
-                digitNumber(number) == 5 -> hundredsThousandsEnding = false
+            if (n > pow(10, digitNumber(number))) result += " "
+            when (digitNumber(number)) {
+                2 -> temp = number
+                5 -> hundredsThousandsEnding = false
             }
             if (temp == 10 || temp > 19) {
                 result += numbersByTens[(temp / 10) - 1]
@@ -401,14 +400,13 @@ fun russian(n: Int): String {
         }
         number %= 1000
         if (n > 1000 && thousandsNeeded) {
-            result += when {
-                hundredsThousandsEnding -> " " + numberByThousands[0]
-                'ь' == result[result.lastIndex] -> " " + numberByThousands[0]
-                'о' == result[result.lastIndex] -> " " + numberByThousands[0]
-                'т' == result[result.lastIndex] -> " " + numberByThousands[0]
-                'к' == result[result.lastIndex] -> " " + numberByThousands[0]
-                'а' == result[result.lastIndex] -> " " + numberByThousands[1]
-                else -> " " + numberByThousands[2]
+            if (result[result.lastIndex] in "ьотк" || hundredsThousandsEnding) {
+                result += " " + numberByThousands[0]
+            } else {
+                result += when {
+                    'а' == result[result.lastIndex] -> " " + numberByThousands[1]
+                    else -> " " + numberByThousands[2]
+                }
             }
             thousandsNeeded = false
         }
@@ -432,4 +430,12 @@ private fun digitNumber(n: Int): Int {
         }
     }
     return count
+}
+
+fun pow(base: Int, degree: Int): Int {
+    var result = 1
+    for (i in 1..degree) {
+        result *= base
+    }
+    return result
 }

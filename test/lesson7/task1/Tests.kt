@@ -67,6 +67,7 @@ Basic, Ruby, Swift.
 
 и не надо при этом никуда торопиться___
             """.trimIndent()
+
         )
         File("temp.txt").delete()
     }
